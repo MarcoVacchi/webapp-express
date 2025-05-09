@@ -5,12 +5,20 @@ const port = 3000;
 const notFound = require('./middlewares/notFound');
 const handleError = require('./middlewares/handleError');
 
+//router;
+const movieRouter = require('./router/movies');
+
+app.use(express.static('public'));
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
 
     res.send('Benvenuto sulla mia app!');
 
 });
+
+app.use('/movies', movieRouter);
 
 //error 500;
 app.use(handleError);
@@ -20,6 +28,6 @@ app.use(notFound);
 
 app.listen(port, () => {
 
-    console.log(`app listening at port ${port}`);
+    console.log(`sono attivo sulla porta ${port}`);
 
 });

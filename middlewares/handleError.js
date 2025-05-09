@@ -1,4 +1,4 @@
-export default function handleError(err, res) {
+function handleError(err, res) {
 
     res.status(500);
     res.json({
@@ -7,3 +7,5 @@ export default function handleError(err, res) {
 
     });
 };
+
+module.exports = handleError;
