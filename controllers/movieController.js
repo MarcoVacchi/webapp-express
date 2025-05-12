@@ -1,15 +1,24 @@
 const conn = require('../data/movies_db');
 
 function index(req, res) {
-    const sql = `
+
+    const { search } = req.query;
+
+    let sql = `
         SELECT
     movies.*, AVG(reviews.vote) as avg_vote
     FROM
     movies
     LEFT JOIN 
     reviews on movies.id = reviews.movie_id
-    GROUP BY movies.ID
     `;
+
+    if (search) {
+        sql += `WHERE title like "%${search}%" OR director LIKE "%${search}%" OR abstract LIKE "%${search}%" `
+    }
+
+    sql += `GROUP BY movies.ID`
+
     conn.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: "Database non connesso!" })
         res.json(results.map(result => ({

@@ -1,12 +1,18 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const cors = require('cors')
 
 const notFound = require('./middlewares/notFound');
 const handleError = require('./middlewares/handleError');
 
 //router;
 const movieRouter = require('./router/movies');
+
+app.use(cors({
+    origin: process.env.FRONT_END
+}))
+
 
 app.use(express.static('public'));
 
