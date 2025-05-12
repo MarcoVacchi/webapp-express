@@ -1,21 +1,24 @@
 const conn = require('../data/movies_db');
 
 function index(req, res) {
-
-    const sql = 'SELECT * FROM movies_db.movies';
-
+    const sql = `
+        SELECT
+    movies.*, AVG(reviews.vote) as avg_vote
+    FROM
+    movies
+    LEFT JOIN 
+    reviews on movies.id = reviews.movie_id
+    GROUP BY movies.ID
+    `;
     conn.query(sql, (err, results) => {
-        if (err) {
-            return res.status(500).json({
-                errorMessage: "Database non connesso!"
-            });
-        };
+        if (err) return res.status(500).json({ error: "Database non connesso!" })
+        res.json(results.map(result => ({
+            ...result,
+            imagepath: process.env.DB_IMG + result.image
+        })))
+    })
 
-        res.json(results);
-    });
-
-
-};
+}
 
 function show(req, res) {
     const { id } = req.params;
