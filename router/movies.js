@@ -6,6 +6,8 @@ const movieController = require('../controllers/movieController');
 //index;
 router.get('/', movieController.index);
 
+router.post('/id/reviews', movieController.storeReview)
+
 //show;
 router.get('/:id', movieController.show);
 
